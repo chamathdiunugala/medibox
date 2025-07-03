@@ -53,13 +53,10 @@ GND   ------ Common ground
 ```
 ![Connections in Wokwi](esp.png)
 
-> **Tip:** Use a dedicated 5 V rail for the servo to avoid brown‑outs.
 
 ---
 
 ## Software Dependencies
-
-Install these libraries through the Arduino Library Manager (or PlatformIO):
 
 * **Adafruit GFX**
 * **Adafruit SSD1306**
@@ -89,8 +86,6 @@ Install these libraries through the Arduino Library Manager (or PlatformIO):
 ---
 
 ## Node‑RED Dashboard
-
-A ready‑made flow `medibox_dashboard.json` exposes sliders for LDR timing, servo factors, and real‑time charts. Import via **Menu ▸ Import ▸ Clipboard**, update broker credentials, and deploy.
 
 ![Node‑RED UI screenshot](image.jpg)
 
