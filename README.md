@@ -51,6 +51,7 @@ GPIO 33 ---- BTN “Prev ↑”
 5V    ------ Servo VCC, Buzzer VCC
 GND   ------ Common ground
 ```
+![Connections in Wokwi](esp.png)
 
 > **Tip:** Use a dedicated 5 V rail for the servo to avoid brown‑outs.
 
@@ -83,22 +84,7 @@ Install these libraries through the Arduino Library Manager (or PlatformIO):
 | `medibox/buzzer`      | ⇠ subscribe | `on/off`      | Force buzzer state     |
 
 *Default broker in sketch:* `broker.hivemq.com:1883` (change `MQTT_BROKER` if needed).
-![Node-Red](image.jpg)
-
----
-
-## Building & Flashing
-
-1. Open **Arduino IDE** (≥ 2.0) or **PlatformIO**.
-2. Install the *esp32* core (Espressif) and the libraries above.
-3. Select **ESP32 Dev Module**, Flash 4 MB, 921 600 baud.
-4. Clone this repo and open `medibox.ino`.
-5. Edit Wi‑Fi SSID/password if not using the default Wokwi network.
-6. Compile & upload. Monitor serial at 115 200 baud.
-
-### Wokwi Simulation
-
-> 👉 Open `medibox.wokwi.json` at **[wokwi.com](https://wokwi.com)** to run the project virtually.
+![Node-Red Flow](flow.png)
 
 ---
 
@@ -106,45 +92,6 @@ Install these libraries through the Arduino Library Manager (or PlatformIO):
 
 A ready‑made flow `medibox_dashboard.json` exposes sliders for LDR timing, servo factors, and real‑time charts. Import via **Menu ▸ Import ▸ Clipboard**, update broker credentials, and deploy.
 
-![Node‑RED UI screenshot](docs/node-red.png)
+![Node‑RED UI screenshot](image.jpg)
 
 ---
-
-## How It Works
-
-1. On boot the ESP32 obtains time from **pool.ntp.org**, initialises peripherals, publishes its current configuration, and displays a splash screen.
-2. Timer‑driven tasks:
-
-   * 1 s: increment software RTC, check alarms.
-   * 1 s: sample DHT22 and evaluate comfort limits.
-   * `single_time` s: accumulate LDR readings into a moving average (`total_time`).
-3. When an alarm triggers, the buzzer/LED melody runs until acknowledged or snoozed.
-4. Servo angle θ is continuously updated as:
-
-   ```text
-   θ = |moffset + (180 – moffset) × LDR × controlling_factor × ln(1/max_count) × (T / ideal_temp)|
-   ```
-
-   providing adaptive pill‑drawer movement based on light and temperature.
-5. All data are published to MQTT; remote sliders update variables instantly.
-
----
-
-## Roadmap
-
-* ⚡ Battery power & charging circuit
-* 📱 BLE companion app (Flutter)
-* 🔋 RTC backup (DS3231)
-* 📦 3D‑printed enclosure and mounting kit
-
-Contributions welcome – feel free to open issues or PRs!
-
----
-
-## License
-
-`MediBox` is licensed under the **MIT License** – see [`LICENSE`](LICENSE) for details.
-
----
-
-© 2025 Chamath Diunugala
